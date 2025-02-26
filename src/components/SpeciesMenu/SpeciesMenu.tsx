@@ -1,15 +1,15 @@
 import React from "react";
-import DogIcon from "../../assets/icons/dog.svg"
-import CatIcon from "../../assets/icons/cat.svg"
+import CatIcon from "../Icons/CatIcon.tsx";
+import DogIcon from "../Icons/DogIcon";
 
 const SpeciesMenu: React.FC = ()=>{
-    return <menu type="vertical">
+    return <menu style={{ display: 'flex', alignItems: 'center' }}>
         <button className="button" style={{display: 'flex', alignItems: 'center', textAlign: 'center'}}>
-            <img className="button-icon" src={DogIcon} alt="Pies" width="20" height="20" style={{marginRight: '8px', fill:"aqua"}}/>
+            <DogIcon height="20px" width="20px" fill="red"/>
             pies
         </button>
         <button className="button" style={{display: 'flex', alignItems: 'center', textAlign: 'center'}}>
-            <img className="button-icon" src={CatIcon} alt="Kot" width="20" height="20" style={{marginRight: '8px'}}/>
+            <CatIcon height="20px" width="20px" fill="red"/>
             kot
         </button>
     </menu>

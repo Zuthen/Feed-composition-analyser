@@ -9,20 +9,15 @@ describe("Species Menu", () => {
         const sut: RenderResult = render(<SpeciesMenu/>)
 
         //Act
-        const buttons = sut.getAllByRole("button")
+       const buttons = sut.getAllByRole("button")
+        const dogIcon = sut.getByRole("DogIcon")
+        const catIcon = sut.getByRole("CatIcon")
         const buttonsCaptions: string[] = buttons.map(item => item.textContent || "");
-        const buttonsIcons: string[] = buttons.map(item=> {
-            const icon = item.querySelector("img")
-            return icon ? icon.src : ""
-        })
 
         // Assert
         expect(buttons.length).equal(2)
         expect(buttonsCaptions).toContain("pies")
         expect(buttonsCaptions).toContain("kot")
-        expect(buttonsIcons.length).equal(2)
-        expect(buttonsIcons[0]).toContain("dog.svg")
-        expect(buttonsIcons[1]).toContain("cat.svg")
     })
 })
 

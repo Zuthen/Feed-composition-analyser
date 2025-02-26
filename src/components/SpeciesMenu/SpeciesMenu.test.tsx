@@ -12,6 +12,7 @@ describe("Species Menu", () => {
        const buttons = sut.getAllByRole("button")
         const dogIcon = sut.getByRole("DogIcon")
         const catIcon = sut.getByRole("CatIcon")
+        const xyz = sut.getByRole("XYZ")
         const buttonsCaptions: string[] = buttons.map(item => item.textContent || "");
 
         // Assert

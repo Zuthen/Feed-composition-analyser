@@ -11,7 +11,9 @@ const DogIcon = ( {height, stroke, width, fill}: DogIconProps) : JSX.Element=> {
     return (
         <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
              width={width} height={height} viewBox="0 0 256.000000 256.000000"
-             preserveAspectRatio="xMidYMid meet">
+             preserveAspectRatio="xMidYMid meet"
+             role="DogIcon"
+             >
 
             <g transform="translate(0.000000,256.000000) scale(0.100000,-0.100000)"  fill={fill? fill : "black"} stroke={stroke? stroke: "black"}>
                 <path d="M564 2546 c-220 -50 -447 -222 -532 -403 -26 -55 -27 -66 -30 -240

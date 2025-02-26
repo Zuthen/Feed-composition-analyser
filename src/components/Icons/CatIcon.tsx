@@ -10,7 +10,8 @@ const CatIcon= ( {height, stroke, width, fill}: CatIconProps) : JSX.Element=> {
     return (
     <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
     width={width} height={height} viewBox="0 0 512.000000 512.000000"
-    preserveAspectRatio="xMidYMid meet">
+    preserveAspectRatio="xMidYMid meet"
+    role="CatIcon">
         <g transform="translate(0.000000,512.000000) scale(0.100000,-0.100000)" fill={fill? fill : "black"} stroke={stroke? stroke: "black"}>
         <path d="M580 4871 c-14 -4 -39 -15 -55 -24 -111 -58 -183 -240 -200 -504 -11
         -170 0 -241 139 -883 72 -331 96 -471 103 -600 5 -103 5 -107 -36 -235 -23

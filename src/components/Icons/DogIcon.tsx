@@ -1,5 +1,5 @@
 import {JSX} from 'react'
-
+import colorsPalette from '../../colorsPalette.json';
 type DogIconProps = {
     height: string,
     width: string,
@@ -8,6 +8,7 @@ type DogIconProps = {
 }
 
 const DogIcon = ( {height, stroke, width, fill}: DogIconProps) : JSX.Element=> {
+    const iconColor = colorsPalette.menuButtonCaption
     return (
         <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
              width={width} height={height} viewBox="0 0 256.000000 256.000000"
@@ -15,7 +16,7 @@ const DogIcon = ( {height, stroke, width, fill}: DogIconProps) : JSX.Element=> {
              role="DogIcon"
              >
 
-            <g transform="translate(0.000000,256.000000) scale(0.100000,-0.100000)"  fill={fill? fill : "black"} stroke={stroke? stroke: "black"}>
+            <g transform="translate(0.000000,256.000000) scale(0.100000,-0.100000)"  fill={fill? fill :iconColor} stroke={stroke? stroke: iconColor}>
                 <path d="M564 2546 c-220 -50 -447 -222 -532 -403 -26 -55 -27 -66 -30 -240
 -4 -208 6 -263 61 -335 93 -121 275 -153 396 -68 24 17 44 30 46 28 1 -2 7
 -54 14 -115 12 -116 44 -242 85 -340 l23 -56 -32 -43 c-120 -158 -105 -390 34

@@ -5,19 +5,19 @@ import SpeciesMenu from './SpeciesMenu';
 describe("Species Menu", () => {
     it("should contain two options: 'pies' and 'kot'", () => {
         // Arrange
-
         const sut: RenderResult = render(<SpeciesMenu/>)
 
         //Act
        const buttons = sut.getAllByRole("button")
-        const dogIcon = sut.getByRole("DogIcon")
-        const catIcon = sut.getByRole("CatIcon")
+
         const buttonsCaptions: string[] = buttons.map(item => item.textContent || "");
 
         // Assert
         expect(buttons.length).equal(2)
         expect(buttonsCaptions).toContain("pies")
         expect(buttonsCaptions).toContain("kot")
+        sut.getByRole("DogIcon")
+        sut.getByRole("CatIcon")
     })
 })
 

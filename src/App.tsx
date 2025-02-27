@@ -5,11 +5,11 @@ import SpeciesMenu from "./components/SpeciesMenu/SpeciesMenu";
 function App() {
 
   return (
-     <>
+      <>
          <Title/>
          <SpeciesMenu/>
    <TextBox/>
-     </>
+          </>
   )
 }
 

@@ -1,15 +1,9 @@
-import TextBox from "./components/Textbox/Textbox"
-import Title from "./components/Title/Title"
-import SpeciesMenu from "./components/SpeciesMenu/SpeciesMenu";
+import CheckFoodIngredients from "./components/CheckFoodIgredients.tsx";
 
 function App() {
 
   return (
-      <>
-         <Title/>
-         <SpeciesMenu/>
-   <TextBox/>
-          </>
+      <CheckFoodIngredients/>
   )
 }
 

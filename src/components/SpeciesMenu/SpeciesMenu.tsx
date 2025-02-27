@@ -2,14 +2,21 @@ import React from "react";
 import CatIcon from "../Icons/CatIcon.tsx";
 import DogIcon from "../Icons/DogIcon";
 import colorsPalette from '../../colorsPalette.json'
+import {Pet} from "../../types/Types.tsx";
 
-const SpeciesMenu: React.FC = ()=>{
+type SpeciesMenuProps = {
+    onChange: (pet : Pet) => void;
+}
+
+const SpeciesMenu: React.FC<SpeciesMenuProps> = ({onChange} : SpeciesMenuProps)=>{
     return <menu style={{ display: 'flex', alignItems: 'center' }}>
-        <button style={{display: 'flex', alignItems: 'center', textAlign: 'center', backgroundColor:colorsPalette.menuButtonBackground, color:colorsPalette.menuButtonCaption}}>
+        <button className="menu-button" style={{backgroundColor:colorsPalette.menuButtonBackground, color:colorsPalette.menuButtonCaption}}
+        onClick={()=>{onChange('dog')}}>
             <DogIcon height="20px" width="20px"/>
             pies
         </button>
-        <button style={{display: 'flex', alignItems: 'center', textAlign: 'center', backgroundColor:colorsPalette.menuButtonBackground, color:colorsPalette.menuButtonCaption}}>
+        <button className="menu-button" style={{backgroundColor:colorsPalette.menuButtonBackground, color:colorsPalette.menuButtonCaption}}
+                onClick={()=>{onChange('cat')}}>
             <CatIcon height="20px" width="20px"/>
             kot
         </button>

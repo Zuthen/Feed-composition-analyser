@@ -111,14 +111,14 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React from "react";
 &nbsp;
-type PetType = 'cat' | 'dog' | '';
+type Pet = 'cat' | 'dog' | '';
 &nbsp;
 &nbsp;
 type PetSpices = {
-    pet?: PetType;
+    pet?: Pet;
 };
 &nbsp;
-const petMapping: Record&lt;PetType, string&gt; = {
+const petMapping: Record&lt;Pet, string&gt; = {
     cat: 'kota',
     dog: 'psa',
     '': 'zwierzaka',
@@ -127,7 +127,7 @@ const petMapping: Record&lt;PetType, string&gt; = {
 &nbsp;
 const Title: React.FC&lt;PetSpices&gt; = ({ pet='' }: PetSpices) =&gt; {
 &nbsp;
-    const petText = petMapping[pet as PetType];
+    const petText = petMapping[pet as Pet];
     return &lt;h1&gt;Sprawdź skład karmy swojego {petText}&lt;/h1&gt;;
 }
 &nbsp;

@@ -1,11 +1,11 @@
-import {describe, it, expect} from 'vitest';
+import {describe, it, expect, vi} from 'vitest';
 import {render, RenderResult} from '@testing-library/react';
 import SpeciesMenu from './SpeciesMenu';
 
 describe("Species Menu", () => {
     it("should contain two options: 'pies' and 'kot'", () => {
         // Arrange
-        const sut: RenderResult = render(<SpeciesMenu/>)
+        const sut: RenderResult = render(<SpeciesMenu onChange={vi.fn()}/>)
 
         //Act
        const buttons = sut.getAllByRole("button")

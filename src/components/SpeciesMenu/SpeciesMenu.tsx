@@ -2,7 +2,7 @@ import React from "react";
 import CatIcon from "../Icons/CatIcon.tsx";
 import DogIcon from "../Icons/DogIcon";
 import colorsPalette from '../../colorsPalette.json'
-import {Pet} from "../../types/Types.tsx";
+import {Pet} from "../../types/Types.ts";
 
 type SpeciesMenuProps = {
     onChange: (pet : Pet) => void;

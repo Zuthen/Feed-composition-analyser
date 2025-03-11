@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import Title from "./Title/Title.tsx";
 import SpeciesMenu from "./SpeciesMenu/SpeciesMenu.tsx";
 import TextBox from "./Textbox/Textbox.tsx";
-import {Pet} from "../types/Types.tsx";
+import {Pet} from "../types/Types.ts";
 
 const CheckFoodIngredients: React.FC = () => {
 

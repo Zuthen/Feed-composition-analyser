@@ -1,6 +1,7 @@
 import React from "react";
 import colorsPalette from '../../colorsPalette.json'
-import {Pet, PetSpices} from "../../types/Types.tsx";
+import {Pet, PetSpices} from "../../types/Types.ts";
+import BowlIcon from "../Icons/BowlIcon.tsx";
 
 const petMapping: Record<Pet, string> = {
     cat: 'kota',
@@ -11,8 +12,11 @@ const petMapping: Record<Pet, string> = {
 
 const Title: React.FC<PetSpices> = ({ pet='' }: PetSpices) => {
 
-    const petText = petMapping[pet as Pet];
-    return <h1 style={{color: colorsPalette.titleText}}>Sprawdź skład karmy swojego {petText}</h1>;
+    const petText = petMapping[pet];
+    return <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '0rem', overflow: 'hidden' }}>
+        <BowlIcon height="120px" width="120" style={{ display:'block', verticalAlign: 'bottom', padding: "unset"}}/>
+        <h1 style={{color: colorsPalette.titleText, marginTop:0}}>Sprawdź skład karmy swojego {petText}</h1>
+    </div>
 }
 
 export default Title;

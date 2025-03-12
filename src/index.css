@@ -34,6 +34,10 @@ button {
   transition: border-color 0.25s;
 
 }
+menu{
+  display: flex;
+  align-items: center;
+}
 
 button:hover {
   border-color: #646cff;
@@ -41,4 +45,15 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+textarea {
+  border: none;
+  outline: 5px dashed;
+  font-size: 18px;
+  width: 80vw;
+  height: 30vh;
+  margin: 5vh auto;
+  display: block;
+  padding: 15px
 }

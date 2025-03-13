@@ -20,6 +20,9 @@ body {
   min-width: 320px;
   min-height: 100vh;
   background-color: #FAF4D3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 button {
@@ -34,10 +37,15 @@ button {
   transition: border-color 0.25s;
 
 }
-menu{
+menu {
+  width: calc(80vw + 10px);
+  margin: 0 auto 10px auto;
   display: flex;
-  align-items: center;
+  justify-content: flex-start;
+  padding: 0;
+  list-style: none;
 }
+
 
 button:hover {
   border-color: #646cff;
@@ -55,5 +63,6 @@ textarea {
   height: 30vh;
   margin: 5vh auto;
   display: block;
-  padding: 15px
+  padding: 15px;
+  box-sizing: border-box;
 }

@@ -31,7 +31,7 @@ const MenuButton: React.FC<MenuButtonProps> = ({onChange, pet, children : icon }
 }
 
 const SpeciesMenu: React.FC<SpeciesMenuProps> = ({onChange} : SpeciesMenuProps)=>{
-    return <menu>
+    return <menu> <p  className="menu-text" style = {{color:colorsPalette.menuButtonBackground}}>Twój zwierzak to </p>
         <MenuButton pet="dog" onChange={()=>onChange("dog")}>
             <DogIcon height="20px" width="20px"/>
         </MenuButton>

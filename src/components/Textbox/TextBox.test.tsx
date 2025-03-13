@@ -6,6 +6,7 @@ describe("Textbox", ()=>{
     it("should render text box", ()=>{
         const sut: RenderResult = render(<Textbox/>)
         const textArea = sut.container.querySelector('textarea')
-        expect(textArea).toBeDefined()
+        expect(textArea).not.toBeNull();
+        expect(textArea!.getAttribute("placeholder")).toEqual("Tutaj wpisz lub skopij skład karmy. Składniki powinny być oddzielone przecinkami")
     })
 })

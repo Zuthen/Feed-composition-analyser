@@ -1,4 +1,4 @@
-import CheckFoodIngredients from "./components/CheckFoodIgredients.tsx";
+import CheckFoodIngredients from "./components/CheckFoodIgedients/CheckFoodIgredients.tsx";
 
 function App() {
 

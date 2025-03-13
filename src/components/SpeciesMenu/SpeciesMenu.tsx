@@ -9,18 +9,35 @@ type SpeciesMenuProps = {
     onChange: (pet : Pet) => void;
 }
 
+type MenuButtonProps={
+    onChange: (pet : Pet) => void;
+    pet:Pet
+    children: React.ReactNode;
+}
+
+const MenuButton: React.FC<MenuButtonProps> = ({onChange, pet, children : icon }:MenuButtonProps) => {
+    const setPetName: Record<Pet, string> ={
+        dog: "pies",
+        cat: "kot",
+        "": "error"
+    }
+    return (
+        <button className="menu-button" style={{backgroundColor:colorsPalette.menuButtonBackground, color:colorsPalette.menuButtonCaption}}
+                onClick={()=>{onChange(pet)}}>
+            {icon}
+            {setPetName[pet]}
+        </button>
+    )
+}
+
 const SpeciesMenu: React.FC<SpeciesMenuProps> = ({onChange} : SpeciesMenuProps)=>{
-    return <menu>
-        <button className="menu-button" style={{backgroundColor:colorsPalette.menuButtonBackground, color:colorsPalette.menuButtonCaption}}
-        onClick={()=>{onChange('dog')}}>
+    return <menu> <p  className="menu-text" style = {{color:colorsPalette.menuButtonBackground}}>Twój zwierzak to </p>
+        <MenuButton pet="dog" onChange={()=>onChange("dog")}>
             <DogIcon height="20px" width="20px"/>
-            pies
-        </button>
-        <button className="menu-button" style={{backgroundColor:colorsPalette.menuButtonBackground, color:colorsPalette.menuButtonCaption}}
-                onClick={()=>{onChange('cat')}}>
+        </MenuButton>
+        <MenuButton pet="cat" onChange={()=>onChange("cat")}>
             <CatIcon height="20px" width="20px"/>
-            kot
-        </button>
+        </MenuButton>
     </menu>
 }
 

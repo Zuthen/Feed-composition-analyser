@@ -48,19 +48,11 @@ menu {
 }
 
 
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
 textarea {
   border: none;
   outline: 5px dashed;
   font-size: 18px;
-  width: 80vw;
+  width: calc(100% - 40px);
   height: 30vh;
   margin: 5vh auto;
   display: block;

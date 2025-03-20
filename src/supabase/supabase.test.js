@@ -1,4 +1,5 @@
 import supabase from './supabaseClient.js';
+import { describe, it, expect } from 'vitest';
 
 async function fetchIngredients() {
     const { data, error } = await supabase.from('ingredients').select('*');
@@ -11,15 +12,10 @@ async function fetchIngredients() {
 }
 
 
-async function testSupabase() {
-    const ingredients = await fetchIngredients();
-    if (ingredients) {
-        console.log('Pobrane składniki:', ingredients);
-        return ingredients;
-    } else {
-        console.log('Nie udało się pobrać składników.');
-        return []
-    }
-}
-
-testSupabase();
+describe('fetchIngredients', () => {
+    it('should fetch ingredients without error', async () => {
+        const ingredients = await fetchIngredients();
+        expect(ingredients).toBeInstanceOf(Array);
+        expect(ingredients.length).toBeGreaterThan(0)
+    });
+});

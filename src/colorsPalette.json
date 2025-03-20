@@ -7,5 +7,8 @@
 
     "pageBackground": "#FAF4D3",
     "pageText": "#D1AC00",
-    "titleText": "#9C6615"
+    "titleText": "#9C6615",
+
+    "disabledField": "#F0E5C9",
+    "disabledButton": "#A5B79C"
 }

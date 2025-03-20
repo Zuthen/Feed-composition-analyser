@@ -18,16 +18,16 @@ describe('CheckButton', () => {
         })
     })
 
-    it("should be enabled by default", ()=> {
+    it("should be disabled by default", ()=> {
         const {getByRole} = render(<CheckButton/>);
         const button = getByRole('button') as HTMLButtonElement
-        expect(button.disabled).toBe(false);
+        expect(button.disabled).toBe(true);
     })
 
     it("should run function on click", ()=> {
         // Arrange
         const testFn = vi.fn()
-        const sut :RenderResult = render(<CheckButton onClick={testFn}/>)
+        const sut :RenderResult = render(<CheckButton onClick={testFn} isDisabled={false}/>)
         // Act
         sut.getByRole("button").click()
         // Assert

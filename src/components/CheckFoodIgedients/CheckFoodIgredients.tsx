@@ -3,6 +3,7 @@ import Title from "../Title/Title.tsx";
 import SpeciesMenu from "../SpeciesMenu/SpeciesMenu.tsx";
 import TextBox from "../Textbox/Textbox.tsx";
 import {Pet} from "../../types/Types.ts";
+import CheckButton from "../CheckButton/CheckButton.tsx";
 
 const CheckFoodIngredients: React.FC = () => {
 
@@ -14,7 +15,8 @@ const CheckFoodIngredients: React.FC = () => {
         <>
             <Title pet={pet}/>
             <SpeciesMenu onChange={onPetChange}/>
-            <TextBox/>
+            <TextBox isDisabled={!pet}/>
+            <CheckButton isDisabled={!pet}/>
         </>
     )
 }

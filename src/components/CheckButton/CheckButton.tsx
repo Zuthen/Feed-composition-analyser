@@ -5,8 +5,12 @@ type CheckButtonProps = {
     onClick?: () => void
 }
 
-const CheckButton = ({isDisabled=false, onClick} : CheckButtonProps) => {
-    return <button style={{backgroundColor: colorsPalette.buttonBackground}} disabled={isDisabled} onClick={onClick}>Sprawdź</button>
+const CheckButton = ({isDisabled=true, onClick} : CheckButtonProps) => {
+    return <button style={{backgroundColor: isDisabled
+            ? colorsPalette.disabledButton
+            : colorsPalette.buttonBackground}}
+                   disabled={isDisabled}
+                   onClick={onClick}>Sprawdź</button>
 }
 
 export default CheckButton

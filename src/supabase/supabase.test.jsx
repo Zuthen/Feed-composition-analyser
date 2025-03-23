@@ -12,8 +12,6 @@ async function fetchIngredients() {
     return data;
 }
 
-// const supabase = createClient(supabaseUrl, supabaseServiceRole);
-
 describe("fetchIngredients", () => {
     it("should fetch ingredients without error", async () => {
         const ingredients = await fetchIngredients();
@@ -21,15 +19,28 @@ describe("fetchIngredients", () => {
         expect(ingredients.length).toBeGreaterThan(0);
     });
 
-    it('should throw error when Supabase URL is missing', () => {
+    it('should throw error when Supabase key is missing', () => {
         // Arrange
-        const originalSupabaseUrl = process.env.SUPABASE_URL; // Zapisz oryginalny URL
-        process.env.SUPABASE_URL = ''; // Ustaw na pusty
+        const originalSupabaseUrl = process.env.SUPABASE_URL;
 
         // Act & Assert
-        expect(() => createClient()).toThrow("Supabase URL is missing");
+        expect(() => createClient(
+            originalSupabaseUrl,"")).toThrow("supabaseKey is required");
 
-        // Restore the original URL
-        process.env.SUPABASE_URL = originalSupabaseUrl; // Przywróć oryginalny URL
-});
+        // Restore the original key
+        process.env.SUPABASE_URL = originalSupabaseUrl;
+    })
+
+    it('should throw error when Supabase url is missing', () => {
+            // Arrange
+            const originalSupabaseKey = process.env.SUPABASE_ANON_KEY;
+
+            // Assert
+            expect(() => createClient(
+                "",originalSupabaseKey)).toThrow("supabaseUrl is required");
+
+            // Restore the original URL
+            process.env.SUPABASE_SERVICE_ROLE_KEY = originalSupabaseKey;
+    })
+})
 

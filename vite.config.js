@@ -6,5 +6,13 @@ export default defineConfig({
     test: {
         globals: true,
         environment: 'jsdom',
-    },
+        coverage: {
+            reporter: ['text', 'json'],
+            exclude: [
+                "src/types/**/*",
+                "src/App.tsx",
+                "src/main.tsx",
+                "src/setupTests.ts"
+            ],
+        },
 });

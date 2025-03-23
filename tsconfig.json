@@ -12,6 +12,9 @@
     "module": "esnext",
     "jsx": "react-jsx",
     "strict": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "allowJs": true
   },
   "exclude": ["node_modules", "**/*.spec.ts", "**/*.test.ts"]
 }

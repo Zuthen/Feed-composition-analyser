@@ -9,7 +9,7 @@ const petMapping: Record<Pet, string> = {
     '': 'zwierzaka',
 };
 type TitleProps = {
-    pet:Pet,
+    pet?:Pet,
     results?: boolean
 }
 

@@ -53,4 +53,17 @@ describe("Results", () => {
             expect(tableCells[2].textContent).toContain((data[i-1].description))
         }
     })
+    it("should throw error when rate not found", ()=> {
+        // Arrange
+        const testData= [
+            {
+                name: "Mięcho",
+                id: 1,
+                description: "Bardzo dobre",
+                rate: "HalynaZeMłyna"
+            }]
+
+        // Assert
+        expect(() => render(<Results listItems={testData} />)).toThrowError("rateNotFound");
+    })
 })

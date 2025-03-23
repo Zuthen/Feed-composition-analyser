@@ -22,3 +22,15 @@
   font-weight: bold;
   margin: 12px;
 }
+
+.table-span{
+  border-radius: 15px;
+  margin: 5px;
+  padding:5px;
+  align-content:start
+}
+.th-merged{
+  text-align: right;
+  padding-right:4%;
+  width: 400px
+}

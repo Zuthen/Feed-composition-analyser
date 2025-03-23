@@ -10,5 +10,8 @@
     "titleText": "#9C6615",
 
     "disabledField": "#F0E5C9",
-    "disabledButton": "#A5B79C"
+    "disabledButton": "#A5B79C",
+
+    "negativeRateBackground": "#E8A49A",
+    "neutralRateBackground": "#DFC27D"
 }

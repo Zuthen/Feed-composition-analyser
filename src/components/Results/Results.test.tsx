@@ -1,4 +1,4 @@
-import {RenderResult, render} from "@testing-library/react";
+import {RenderResult, render, within} from "@testing-library/react";
 import {describe, it, expect} from 'vitest'
 import Results from "./Results.tsx";
 
@@ -25,26 +25,32 @@ describe("Results", () => {
                 rate: "avoid"
             }
         ]
-        const expectedRate1 = "świetny składnik!"
-        const expectedRate2 = "jest ok, ale..."
-        const expectedRate3 = "najlepiej unikać"
+        function discriptiveRate(rate: string): string {
+            if (rate === "great") return "świetny składnik!"
+            if (rate === "ok") return  "jest ok, ale..."
+            if (rate === "avoid") return "najlepiej unikać"
+            return "rate not found"
+        }
+
         //Act
         const sut: RenderResult = render(<Results listItems={data}/>)
 
         // Assert
-        const listItems= sut.getAllByRole("listitem")
-        expect(listItems.length).toEqual(data.length)
-        // ListItem1
-        expect(listItems[0].textContent).toContain(data[0].name)
-        expect(listItems[0].textContent).toContain(data[0].description)
-        expect(listItems[0].textContent).toContain(expectedRate1)
-        // ListItem2
-        expect(listItems[1].textContent).toContain(data[1].name)
-        expect(listItems[1].textContent).toContain(data[1].description)
-        expect(listItems[1].textContent).toContain(expectedRate2)
-        // ListItem2
-        expect(listItems[2].textContent).toContain(data[2].name)
-        expect(listItems[2].textContent).toContain(data[2].description)
-        expect(listItems[2].textContent).toContain(expectedRate3)
+        const tableRows= sut.getAllByRole("row")
+        expect(tableRows.length).toEqual(data.length+1)
+        // Table Header
+        const headerCells = within(tableRows[0]).getAllByRole("columnheader")
+        expect(headerCells.length).toEqual(2)
+        expect(headerCells[0].textContent).toBe("składnik")
+        expect(headerCells[1].textContent).toBe("opis")
+        // Table Rows
+        for (let i=1; i<tableRows.length; i++){
+            const tableRow=tableRows[i]
+            const tableCells=within(tableRow).getAllByRole("cell")
+            expect(tableCells.length).toEqual(3)
+            expect(tableCells[0].textContent).toContain(discriptiveRate(data[i-1].rate))
+            expect(tableCells[1].textContent).toContain(data[i-1].name)
+            expect(tableCells[2].textContent).toContain((data[i-1].description))
+        }
     })
 })

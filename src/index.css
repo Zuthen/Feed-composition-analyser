@@ -59,3 +59,20 @@ textarea {
   padding: 15px;
   box-sizing: border-box;
 }
+
+table {
+  width: calc(100% - 40px);
+  border-spacing: 10px;
+}
+
+th {
+  text-align: left
+}
+
+td {
+  text-align: left
+}
+
+tr{
+  padding: 10px;
+}

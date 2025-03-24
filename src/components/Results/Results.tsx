@@ -1,13 +1,8 @@
 import React from "react";
 import BowlIcon from "../Icons/BowlIcon.tsx";
 import colorsPalette from '../../colorsPalette.json'
+import {GetData} from "../../types/Types.ts";
 
-type ResultItemProps= {
-    id: number
-    name: string,
-    description: string,
-    rate: string
-}
 type RateDescription = 'świetny składnik!' | 'jest ok, ale...' | 'najlepiej unikać';
 type Rate = {
     rateDescription: RateDescription
@@ -21,8 +16,8 @@ function setDescriptiveRate(rate: string): Rate {
     throw new Error("rateNotFound");
 }
 
-const ResultItem: React.FC<ResultItemProps> = ({...listItem}: ResultItemProps)=> {
-    const rate = setDescriptiveRate(listItem.rate)
+const ResultItem: React.FC<GetData> = ({...listItem}: GetData)=> {
+    const rate = setDescriptiveRate(listItem.rating)
 
     return <tr style={{color:rate.color}}>
         <td>
@@ -33,7 +28,7 @@ const ResultItem: React.FC<ResultItemProps> = ({...listItem}: ResultItemProps)=>
     </tr>
 }
 type ResultsProps = {
-    listItems: ResultItemProps[]
+    listItems: GetData[]
 }
 
 const Results:React.FC<ResultsProps> = ({listItems}: ResultsProps )=> {

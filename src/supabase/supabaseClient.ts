@@ -1,7 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseServiceRole = import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
+export const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+export const supabaseServiceRole = import.meta.env.VITE_SUPABASE_SERVICE_ROLE_KEY;
 
 if (!supabaseUrl) {
     throw new Error("Supabase URL is missing");

@@ -1,50 +1,25 @@
-import { useState } from "react";
 import colorsPalette from "../../colorsPalette.json";
-import supabase from "../../supabase/supabaseClient.ts";
-import {GetData} from "../../types/Types.ts";
+import fetchData from "../../supabase/API/get.ts";
+import {GetRequestData, GetData} from "../../types/Types.ts";
+import React from "react";
 
 type CheckButtonProps = {
     isDisabled?: boolean;
-    ingredients: string[];
-    assignResults: (results: GetData[]) => void
+    requestData: GetRequestData;
+    getResults:  React.Dispatch<React.SetStateAction<GetData[] | undefined>>
 };
 
-const CheckButton = ({ isDisabled = true, ingredients, assignResults }: CheckButtonProps) => {
-    const [loading, setLoading] = useState(false);
-
-    const getIngredients = async ({ pet = "dog" }) => {
-        setLoading(true);
-
-        const { data, error } = await supabase
-            .from("ingredients")
-            .select("description, rating, name")
-            .eq("pet", pet)
-            .in("name", ingredients);
-
-        if (error) {
-            console.error("Błąd pobierania danych:", error);
-        } else {
-            const ingredients = data?.map(element =>{
-                return {
-                    name: element.name,
-                    description: element.description,
-                    rating: element.rating
-                } as GetData
-            })
-            assignResults(ingredients)
-        }
-        setLoading(false);
-    };
+const CheckButton = ({ isDisabled = true, requestData, getResults }: CheckButtonProps) => {
 
     return (
         <button
             style={{
                 backgroundColor: isDisabled ? colorsPalette.disabledButton : colorsPalette.buttonBackground,
             }}
-            disabled={isDisabled || loading}
-            onClick={() => getIngredients({ pet: "dog" })}
+            disabled={isDisabled}
+            onClick={() => fetchData({ input: requestData, setResult: getResults })}
         >
-            {loading ? "Ładowanie..." : "Sprawdź"}
+            Sprawdź
         </button>
     );
 };

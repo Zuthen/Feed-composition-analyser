@@ -3,10 +3,11 @@ import {render, RenderResult} from '@testing-library/react';
 import CheckButton from "./CheckButton.jsx"
 
 describe('CheckButton', () => {
-    const assignFn = vi.fn
+    const assignFn = vi.fn()
+    const renderCheckButton = (disabled?: boolean) => render(<CheckButton isDisabled={disabled} getResults={assignFn} requestData={{pet:"", ingredients:[]}}/>)
 
     it('has "Sprawdź" label', ()=> {
-        const sut: RenderResult = render(<CheckButton assignResults={()=>assignFn} ingredients={[]}/>)
+        const sut: RenderResult = renderCheckButton()
         sut.getByText("Sprawdź")
     })
 
@@ -14,14 +15,14 @@ describe('CheckButton', () => {
 
     testData.forEach(testcase => {
         it(`should be ${testcase.testcaseNamePart}`, () => {
-            const {getByRole} = render(<CheckButton isDisabled={testcase.isDisabled} assignResults={()=>assignFn} ingredients={[]}/>)
+            const {getByRole} = renderCheckButton(testcase.isDisabled)
             const button = getByRole('button') as HTMLButtonElement
                 expect(button.disabled).toBe(testcase.isDisabled);
         })
     })
 
     it("should be disabled by default", ()=> {
-        const {getByRole} = render(<CheckButton assignResults={()=>assignFn} ingredients={[]}/>)
+        const {getByRole} = renderCheckButton()
         const button = getByRole('button') as HTMLButtonElement
         expect(button.disabled).toBe(true);
     })

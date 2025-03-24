@@ -1,4 +1,4 @@
-import supabase from './supabaseClient.d.ts';
+import supabase from './supabaseClient.ts';
 import { describe, it, expect } from 'vitest';
 import {createClient} from "@supabase/supabase-js";
 
@@ -21,7 +21,7 @@ describe("fetchIngredients", () => {
 
     it('should throw error when Supabase key is missing', () => {
         // Arrange
-        const originalSupabaseUrl = process.env.SUPABASE_URL;
+        const originalSupabaseUrl = import.meta.env.VITE_SUPABASE_URL
 
         // Act & Assert
         expect(() => createClient(
@@ -33,7 +33,7 @@ describe("fetchIngredients", () => {
 
     it('should throw error when Supabase url is missing', () => {
             // Arrange
-            const originalSupabaseKey = process.env.SUPABASE_ANON_KEY;
+            const originalSupabaseKey = import.meta.env.SUPABASE_ANON_KEY;
 
             // Assert
             expect(() => createClient(

@@ -3,8 +3,10 @@ import {render, RenderResult} from '@testing-library/react';
 import CheckButton from "./CheckButton.jsx"
 
 describe('CheckButton', () => {
+    const assignFn = vi.fn
+
     it('has "Sprawdź" label', ()=> {
-        const sut: RenderResult = render(<CheckButton/>)
+        const sut: RenderResult = render(<CheckButton assignResults={()=>assignFn} ingredients={[]}/>)
         sut.getByText("Sprawdź")
     })
 
@@ -12,25 +14,15 @@ describe('CheckButton', () => {
 
     testData.forEach(testcase => {
         it(`should be ${testcase.testcaseNamePart}`, () => {
-            const {getByRole} = render(<CheckButton isDisabled={testcase.isDisabled}/>);
+            const {getByRole} = render(<CheckButton isDisabled={testcase.isDisabled} assignResults={()=>assignFn} ingredients={[]}/>)
             const button = getByRole('button') as HTMLButtonElement
                 expect(button.disabled).toBe(testcase.isDisabled);
         })
     })
 
     it("should be disabled by default", ()=> {
-        const {getByRole} = render(<CheckButton/>);
+        const {getByRole} = render(<CheckButton assignResults={()=>assignFn} ingredients={[]}/>)
         const button = getByRole('button') as HTMLButtonElement
         expect(button.disabled).toBe(true);
-    })
-
-    it("should run function on click", ()=> {
-        // Arrange
-        const testFn = vi.fn()
-        const sut :RenderResult = render(<CheckButton onClick={testFn} isDisabled={false}/>)
-        // Act
-        sut.getByRole("button").click()
-        // Assert
-        expect(testFn).toHaveBeenCalled()
     })
 })

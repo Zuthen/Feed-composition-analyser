@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import Title from "../Title/Title.tsx";
 import SpeciesMenu from "../SpeciesMenu/SpeciesMenu.tsx";
 import TextBox from "../Textbox/Textbox.tsx";
-import {Pet} from "../../types/Types.ts";
+import {Pet, GetData} from "../../types/Types.ts";
 import CheckButton from "../CheckButton/CheckButton.tsx";
 import Results from "../Results/Results.tsx";
 
@@ -13,10 +13,17 @@ const CheckFoodIngredients: React.FC = () => {
     const onPetChange = (newPet: Pet) => {
         setPet(newPet)
     }
-    const [areResults, setAreResults] = useState<boolean>(false)
-    function handleResults(){
-        setAreResults(true)
+    const [results, setResults] = useState<GetData[]>([])
+
+
+    const [ingredients, setIngredients] = useState<string[]>([])
+
+    function handleTextBoxChange(ingredientsList: string){
+        const textBoxIngredients = ingredientsList.split(",")
+        const trimmedIngredients = textBoxIngredients.map(ingredient => ingredient.trim())
+        setIngredients(trimmedIngredients)
     }
+
     const temporaryData = [
         {
             name: "Mięcho",
@@ -39,13 +46,13 @@ const CheckFoodIngredients: React.FC = () => {
     ]
     return (
         <>
-            <Title pet={pet} results={areResults}/>
-            {areResults ?
+            <Title pet={pet} results={results}/>
+            {results.length>0 ?
                 <Results listItems={temporaryData}/>
                 :
                 <><SpeciesMenu onChange={onPetChange}/>
-                <TextBox isDisabled={!pet}/>
-                 <CheckButton isDisabled={!pet} onClick={handleResults}/>
+                <TextBox isDisabled={!pet} mapIngredients={handleTextBoxChange}/>
+                 <CheckButton isDisabled={!pet} ingredients={ingredients} assignResults={setResults}/>
                 </>
             }
         </>

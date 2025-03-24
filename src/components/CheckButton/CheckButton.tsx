@@ -1,16 +1,27 @@
-import colorsPalette from '../../colorsPalette.json'
+import colorsPalette from "../../colorsPalette.json";
+import fetchData from "../../supabase/API/get.ts";
+import {GetRequestData, GetData} from "../../types/Types.ts";
+import React from "react";
 
 type CheckButtonProps = {
-    isDisabled?: boolean
-    onClick?: () => void
-}
+    isDisabled?: boolean;
+    requestData: GetRequestData;
+    getResults:  React.Dispatch<React.SetStateAction<GetData[] | undefined>>
+};
 
-const CheckButton = ({isDisabled=true, onClick} : CheckButtonProps) => {
-    return <button style={{backgroundColor: isDisabled
-            ? colorsPalette.disabledButton
-            : colorsPalette.buttonBackground}}
-                   disabled={isDisabled}
-                   onClick={onClick}>Sprawdź</button>
-}
+const CheckButton = ({ isDisabled = true, requestData, getResults }: CheckButtonProps) => {
 
-export default CheckButton
+    return (
+        <button
+            style={{
+                backgroundColor: isDisabled ? colorsPalette.disabledButton : colorsPalette.buttonBackground,
+            }}
+            disabled={isDisabled}
+            onClick={() => fetchData({ input: requestData, setResult: getResults })}
+        >
+            Sprawdź
+        </button>
+    );
+};
+
+export default CheckButton;

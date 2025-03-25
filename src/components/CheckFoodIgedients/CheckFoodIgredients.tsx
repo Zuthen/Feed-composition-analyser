@@ -20,7 +20,7 @@ const CheckFoodIngredients: React.FC = () => {
 
     function handleTextBoxChange(ingredientsList: string){
         const textBoxIngredients = ingredientsList.split(",")
-        const trimmedIngredients = textBoxIngredients.map(ingredient => ingredient.trim())
+        const trimmedIngredients = textBoxIngredients.map(ingredient => ingredient.trim().toLowerCase())
         const data: GetRequestData = {
             ingredients:trimmedIngredients,
             pet

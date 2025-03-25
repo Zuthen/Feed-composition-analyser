@@ -16,7 +16,8 @@ type ResponseData = {
 }
 
 async function fetchData(data: FetchData ) {
-    const response = await fetch(`${supabaseUrl}/rest/v1/ingredients?name=in.(${data.input.ingredients.join(',')})&pet=eq.${data.input.pet.toString()}`, {
+    const response = await fetch(`${supabaseUrl}/rest/v1/ingredients?or=(${data.input.ingredients.map(ingredient => `name.ilike.${ingredient}`).join(',')})&pet=eq.${data.input.pet}`
+        , {
         method: 'GET',
         headers: {
             'apikey': supabaseServiceRole as string,

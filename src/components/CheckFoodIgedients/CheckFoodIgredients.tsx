@@ -28,11 +28,13 @@ const CheckFoodIngredients: React.FC = () => {
         setRequestData(data)
     }
 
+
+
     return (
         <>
             <Title pet={pet} results={results} />
-            {results && results.length > 0 ? (
-                <Results listItems={results} />
+            {requestData && results && results.length > 0 ? (
+                <Results listItems={results} requestData={requestData}/>
             ) : (
                 <>
                     <SpeciesMenu onChange={onPetChange} />

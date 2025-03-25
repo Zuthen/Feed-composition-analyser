@@ -1,11 +1,14 @@
 import {RenderResult, render, within} from "@testing-library/react";
 import {describe, it, expect} from 'vitest'
 import Results from "./Results.tsx";
-import {GetData} from "../../types/Types.ts";
+import {GetData, GetRequestData} from "../../types/Types.ts";
 
 describe("Results", () => {
     it("should be rendered", ()=> {
         // Arrange
+        const requestData: GetRequestData={
+            pet: "cat", ingredients: ["Mięcho", "Podroby", "Podroby"]
+        }
         const data:GetData[]= [
             {
              name: "Mięcho",
@@ -34,7 +37,7 @@ describe("Results", () => {
         }
 
         //Act
-        const sut: RenderResult = render(<Results listItems={data}/>)
+        const sut: RenderResult = render(<Results listItems={data} requestData={requestData}/>)
 
         // Assert
         const tableRows= sut.getAllByRole("row")
@@ -56,6 +59,9 @@ describe("Results", () => {
     })
     it("should throw error when rate not found", ()=> {
         // Arrange
+        const requestData: GetRequestData={
+            pet: "cat", ingredients: ["Mięcho", "Podroby", "Podroby"]
+        }
         const testData: GetData[]= [
             {
                 name: "Mięcho",
@@ -65,6 +71,6 @@ describe("Results", () => {
             }]
 
         // Assert
-        expect(() => render(<Results listItems={testData} />)).toThrowError("rateNotFound");
+        expect(() => render(<Results listItems={testData} requestData={requestData} />)).toThrowError("rateNotFound");
     })
 })

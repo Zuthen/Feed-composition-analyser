@@ -1,7 +1,7 @@
 import React from "react";
 import BowlIcon from "../Icons/BowlIcon.tsx";
 import colorsPalette from '../../colorsPalette.json'
-import {GetData} from "../../types/Types.ts";
+import {GetData, GetRequestData} from "../../types/Types.ts";
 
 type RateDescription = 'świetny składnik!' | 'jest ok, ale...' | 'najlepiej unikać';
 type Rate = {
@@ -29,12 +29,21 @@ const ResultItem: React.FC<GetData> = ({...listItem}: GetData)=> {
 }
 type ResultsProps = {
     listItems: GetData[]
+    requestData: GetRequestData
 }
 
-const Results:React.FC<ResultsProps> = ({listItems}: ResultsProps )=> {
-return <>
+
+
+const Results:React.FC<ResultsProps> = ({listItems, requestData}: ResultsProps )=> {
+    function notFoundIngredients(): string[] {
+        const requestIngredients=requestData.ingredients
+        const resultIngredients = listItems.map(item => item.name.toLowerCase())
+        return requestIngredients.filter(ingredient =>!resultIngredients.includes(ingredient))
+    }
+    notFoundIngredients()
+    return <>
     <table >
-    <thead style={{color:colorsPalette.pageText}}>
+    <thead style={{color:colorsPalette.pageText, width:"66%"}}>
     <tr>
          <th className="th-merged" colSpan={2}>składnik</th><th>opis</th>
     </tr>

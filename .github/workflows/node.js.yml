@@ -31,9 +31,5 @@ jobs:
     - run: npm run test
 
     env:
-          # REACT_APP_SUPABASE_URL: ${{ secrets.REACT_APP_SUPABASE_URL }}
-          # REACT_APP_SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.REACT_APP_SUPABASE_SERVICE_ROLE_KEY }}
-          # SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          # SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           VITE_SUPABASE_URL: ${{secrets.VITE_SUPABASE_URL}}
           VITE_SUPABASE_SERVICE_ROLE_KEY: ${{secrets.VITE_SUPABASE_SERVICE_ROLE_KEY}}

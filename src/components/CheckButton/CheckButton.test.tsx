@@ -4,7 +4,7 @@ import CheckButton from "./CheckButton.jsx"
 
 describe('CheckButton', () => {
     const assignFn = vi.fn()
-    const renderCheckButton = (disabled?: boolean) => render(<CheckButton isDisabled={disabled} getResults={assignFn} requestData={{pet:"", ingredients:[]}}/>)
+    const renderCheckButton = (disabled?: boolean) => render(<CheckButton isDisabled={disabled} getResults={assignFn} />)
 
     it('has "Sprawdź" label', ()=> {
         const sut: RenderResult = renderCheckButton()

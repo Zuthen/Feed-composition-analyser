@@ -5,6 +5,7 @@ import SpeciesMenu from "../SpeciesMenu/SpeciesMenu.tsx";
 import TextBox from "../Textbox/Textbox.tsx";
 import CheckButton from "../CheckButton/CheckButton.tsx";
 import Results from "../Results/Results.tsx";
+// import LoaderPopup from "../LoaderPopup/LoaderPopup.tsx";
 import fetchData from "../../supabase/API/get.ts";
 
 
@@ -36,6 +37,7 @@ const CheckFoodIngredients: React.FC = () => {
 
     return (
         <>
+            {/*<LoaderPopup loadingReason="dataBase" open={true}/>*/}
             <Title pet={pet} results={results} />
             {requestData && results ? (
                 <Results listItems={results} requestData={requestData}/>

@@ -76,3 +76,7 @@ td {
 tr{
   padding: 10px;
 }
+
+dialog{
+  border: none;
+}

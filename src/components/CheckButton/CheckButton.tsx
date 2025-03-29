@@ -1,15 +1,11 @@
 import colorsPalette from "../../colorsPalette.json";
-import fetchData from "../../supabase/API/get.ts";
-import {GetRequestData, GetData} from "../../types/Types.ts";
-import React from "react";
 
 type CheckButtonProps = {
     isDisabled?: boolean;
-    requestData: GetRequestData;
-    getResults:  React.Dispatch<React.SetStateAction<GetData[] | undefined>>
+    getResults: () => void;
 };
 
-const CheckButton = ({ isDisabled = true, requestData, getResults }: CheckButtonProps) => {
+const CheckButton = ({ isDisabled = true, getResults }: CheckButtonProps) => {
 
     return (
         <button
@@ -17,7 +13,7 @@ const CheckButton = ({ isDisabled = true, requestData, getResults }: CheckButton
                 backgroundColor: isDisabled ? colorsPalette.disabledButton : colorsPalette.buttonBackground,
             }}
             disabled={isDisabled}
-            onClick={() => fetchData({ input: requestData, setResult: getResults })}
+            onClick={getResults}
         >
             Sprawdź
         </button>

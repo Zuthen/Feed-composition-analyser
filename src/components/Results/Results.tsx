@@ -1,7 +1,8 @@
-import React from "react";
+import React, {useCallback, useEffect} from "react";
 import BowlIcon from "../Icons/BowlIcon.tsx";
 import colorsPalette from '../../colorsPalette.json'
 import {GetData, GetRequestData} from "../../types/Types.ts";
+import {getIngredientsInfo} from "../../HuggingFace/getIngredientsInfo.ts";
 
 type RateDescription = 'świetny składnik!' | 'jest ok, ale...' | 'najlepiej unikać';
 type Rate = {
@@ -32,15 +33,30 @@ type ResultsProps = {
     requestData: GetRequestData
 }
 
-
-
 const Results:React.FC<ResultsProps> = ({listItems, requestData}: ResultsProps )=> {
     function notFoundIngredients(): string[] {
         const requestIngredients=requestData.ingredients
         const resultIngredients = listItems.map(item => item.name.toLowerCase())
         return requestIngredients.filter(ingredient =>!resultIngredients.includes(ingredient))
     }
-    notFoundIngredients()
+
+    const missingIngredients=notFoundIngredients()
+
+    const fetchMissingIngredientsFromAI = useCallback(async () => {
+        try {
+            return await getIngredientsInfo(missingIngredients, requestData.pet);
+        } catch (error) {
+            return error;
+        }
+    }, [missingIngredients, requestData.pet]);
+
+    useEffect(() => {
+        fetchMissingIngredientsFromAI()
+            .then(response => console.log("Otrzymane dane:", response))
+            .catch(error => console.error("Błąd:", error));
+    }, [fetchMissingIngredientsFromAI]);
+
+
     return <>
     <table >
     <thead style={{color:colorsPalette.pageText, width:"66%"}}>

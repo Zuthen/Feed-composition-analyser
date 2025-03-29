@@ -1,22 +1,10 @@
 import {supabaseUrl, supabaseServiceRole} from "../supabaseClient.ts";
-import {GetRequestData, GetData} from "../../types/Types.ts";
-import React from "react";
+import {GetData, GetRequestData, Rating, ResponseData} from "../../types/Types.ts";
 
-type FetchData = {
-    input:GetRequestData,
-    setResult: React.Dispatch<React.SetStateAction<GetData[] | undefined>>
-}
-type ResponseData = {
-    description: string
-    id: number
-    name: string
-    percentage: number
-    pet: string
-    rating: string
-}
 
-async function fetchData(data: FetchData ) {
-    const response = await fetch(`${supabaseUrl}/rest/v1/ingredients?or=(${data.input.ingredients.map(ingredient => `name.ilike.${ingredient}`).join(',')})&pet=eq.${data.input.pet}`
+
+async function fetchData(data: GetRequestData ) {
+    const response = await fetch(`${supabaseUrl}/rest/v1/ingredients?or=(${data.ingredients.map(ingredient => `name.ilike.${ingredient}`).join(',')})&pet=eq.${data.pet}`
         , {
         method: 'GET',
         headers: {
@@ -26,17 +14,17 @@ async function fetchData(data: FetchData ) {
         } as Record<string, string>,
     });
 
-    const fullResult: ResponseData[]  = await response.json();
+    const fullResult: ResponseData[] = await response.json();
 
     const result: GetData[] = fullResult.map(item => (
         {
             id: item.id,
             description: item.description,
             name: item.name,
-            rating: item.rating
+            rating: item.rating as Rating
         }
     ));
-    data.setResult(result);
+    return result;
 }
 
 export default fetchData;

@@ -9,5 +9,14 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
   },
-
+  build: {
+    rollupOptions: {
+      input: {
+        background: 'src/background.ts'
+      },
+      output: {
+        entryFileNames: '[name].js'
+      }
+    }
+  },
 })

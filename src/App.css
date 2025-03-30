@@ -34,3 +34,40 @@
   padding-right:4%;
   width: 400px
 }
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  50% { transform: rotate(180deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.loader {
+  width: 200px;
+  height: 200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  background: none;
+}
+
+.loader div.spinner {
+  position: absolute;
+  animation: spin 0.93s linear infinite;
+  width: 160px;
+  height: 160px;
+  top: 20px;
+  left: 20px;
+  border-radius: 50%;
+  box-shadow: 0 6px 0 0 #3a7d44;
+  transform-origin: 80px 82.9px;
+}
+
+.loader div.text {
+  position: absolute;
+  font-size: 12px;
+  font-weight: bold;
+  color: #3a7d44;
+  text-align: center;
+  white-space: pre-wrap;
+}

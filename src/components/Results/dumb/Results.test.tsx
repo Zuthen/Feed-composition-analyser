@@ -1,30 +1,27 @@
 import {RenderResult, render, within} from "@testing-library/react";
 import {describe, it, expect} from 'vitest'
-import Results from "./Results.tsx";
-import {GetData, GetRequestData} from "../../types/Types.ts";
+import Results, {ListItem} from "./Results"
 
 describe("Results", () => {
     it("should be rendered", ()=> {
         // Arrange
-        const requestData: GetRequestData={
-            pet: "cat", ingredients: ["Mięcho", "Podroby", "Podroby"]
-        }
-        const data:GetData[]= [
+
+        const data:ListItem[]= [
             {
              name: "Mięcho",
-             id: 1,
+             id: "1",
              description: "Bardzo dobre",
              rating: "great"
             },
             {
                 name: "Podroby",
-                id: 2,
+                id: "2",
                 description: "Może być",
                 rating: "ok"
             },
             {
-                name: "Podroby",
-                id: 3,
+                name: "Kiełbasa",
+                id: "3",
                 description: "Co to ma być!!!",
                 rating: "avoid"
             }
@@ -35,9 +32,8 @@ describe("Results", () => {
             if (rate === "avoid") return "najlepiej unikać"
             return "rate not found"
         }
-
         //Act
-        const sut: RenderResult = render(<Results listItems={data} requestData={requestData}/>)
+        const sut: RenderResult = render(<Results listItems={data}/>)
 
         // Assert
         const tableRows= sut.getAllByRole("row")

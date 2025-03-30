@@ -1,7 +1,7 @@
 export type Pet = 'cat' | 'dog' | '';
 export type Rating = "avoid" | "ok" | "great"
 export type GetData = {
-    id: number;
+    id: number | string;
     description: string
     name: string
     rating: Rating
@@ -12,6 +12,7 @@ export type GetRequestData = {
 }
 
 export type GetResponseData = {
+    id: number | string
     pet: Pet
     ingredientName: string
     rating: Rating

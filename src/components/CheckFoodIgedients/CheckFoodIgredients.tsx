@@ -1,5 +1,5 @@
 import React, {useState} from 'react'
-import {Pet, GetData, GetRequestData} from "../../types/Types.ts";
+import {Pet, DatabaseRecord, GetRequestData} from "../../types/Types.ts";
 import Title from "../Title/Title.tsx";
 import SpeciesMenu from "../SpeciesMenu/SpeciesMenu.tsx";
 import TextBox from "../Textbox/Textbox.tsx";
@@ -17,7 +17,7 @@ const CheckFoodIngredients: React.FC = () => {
     const onPetChange = (newPet: Pet) => {
         setPet(newPet)
     }
-    const [results, setResults] = useState<GetData[] | undefined>()
+    const [results, setResults] = useState<DatabaseRecord[] | undefined>()
     const [requestData, setRequestData] = useState<GetRequestData>()
 
     async function handleCheckButtonClicked( ) {

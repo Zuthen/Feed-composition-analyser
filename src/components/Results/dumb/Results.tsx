@@ -7,7 +7,7 @@ export type ListItem = {
     description: string
     name: string
     rating: Rating
-    id: string
+    id: number
 }
 type RateDescription = 'świetny składnik!' | 'jest ok, ale...' | 'najlepiej unikać';
 
@@ -39,7 +39,7 @@ type ResultsProps = {
     listItems: ListItem[]
 }
 const Results:React.FC<ResultsProps> = ({listItems}: ResultsProps )=> {
-return <>
+    return <>
         :
         <table >
             <thead style={{color:colorsPalette.pageText, width:"66%"}}>
@@ -49,8 +49,8 @@ return <>
             </thead>
             <tbody>
             {
-                listItems.map((listItem)=>
-                     <ResultItem  key={listItem.id} {...listItem}/>)
+                listItems.map((listItem, index)=>
+                     <ResultItem  key={listItem.id || index*2137} {...listItem}/>)
             }
             </tbody>
         </table>

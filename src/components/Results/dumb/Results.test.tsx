@@ -9,19 +9,19 @@ describe("Results", () => {
         const data:ListItem[]= [
             {
              name: "Mięcho",
-             id: "1",
+             id: 1,
              description: "Bardzo dobre",
              rating: "great"
             },
             {
                 name: "Podroby",
-                id: "2",
+                id: 2,
                 description: "Może być",
                 rating: "ok"
             },
             {
                 name: "Kiełbasa",
-                id: "3",
+                id: 3,
                 description: "Co to ma być!!!",
                 rating: "avoid"
             }

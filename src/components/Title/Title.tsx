@@ -1,6 +1,6 @@
 import React from "react";
 import colorsPalette from '../../colorsPalette.json'
-import {GetData, Pet} from "../../types/Types.ts";
+import {DatabaseRecord, Pet} from "../../types/Types.ts";
 import BowlIcon from "../Icons/BowlIcon.tsx";
 
 const petMapping: Record<Pet, string> = {
@@ -10,7 +10,7 @@ const petMapping: Record<Pet, string> = {
 };
 type TitleProps = {
     pet?:Pet,
-    results?: GetData[]
+    results?: DatabaseRecord[]
 }
 
 const Title: React.FC<TitleProps> = ({ pet="", results=[] }: TitleProps) => {

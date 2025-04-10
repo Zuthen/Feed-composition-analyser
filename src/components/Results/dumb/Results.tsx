@@ -42,11 +42,6 @@ const Results:React.FC<ResultsProps> = ({listItems}: ResultsProps )=> {
     return <>
         :
         <table >
-            <thead style={{color:colorsPalette.pageText, width:"66%"}}>
-            <tr>
-                <th className="th-merged" colSpan={2}>składnik</th><th>opis</th>
-            </tr>
-            </thead>
             <tbody>
             {
                 listItems.map((listItem, index)=>

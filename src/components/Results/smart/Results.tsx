@@ -2,7 +2,7 @@ import React, {Dispatch, SetStateAction, useCallback, useEffect, useState} from 
 import {
     DatabaseInsert,
     DatabaseRecord,
-    GetRequestData,
+    RequestData,
     GetResponseData,
     GetResponseError,
 } from "../../../types/Types.ts";
@@ -13,7 +13,7 @@ import {postData, postErrors} from "../../../supabase/API/post.ts";
 
 type ResultsProps = {
     listItems: DatabaseRecord[]
-    requestData: GetRequestData
+    requestData: RequestData
     loading: boolean
     setLoading: Dispatch<SetStateAction<boolean>>
 }
@@ -62,7 +62,7 @@ const Results:React.FC<ResultsProps> = ({listItems, requestData, loading, setLoa
     const [responseErrors, setResponseErrors] = useState<GetResponseError[]>([])
 
     function notFoundIngredients(): string[] {
-        const requestIngredients=requestData.ingredients
+        const requestIngredients=requestData.ingredients.map(ingredient =>ingredient.name)
         const resultIngredients = listItems.map(item => item.name.toLowerCase())
         return requestIngredients.filter(ingredient =>!resultIngredients.includes(ingredient))
     }

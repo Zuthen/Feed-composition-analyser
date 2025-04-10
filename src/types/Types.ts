@@ -7,7 +7,11 @@ export type DatabaseRecord = {
     name: string
     rating: Rating
 }
-
+export type Ingredient ={
+    name: string,
+    percentage?: number
+    in?: string
+}
 export type DatabaseInsert = {
     description: string
     name: string
@@ -15,9 +19,9 @@ export type DatabaseInsert = {
     pet:Pet
 }
 
-export type GetRequestData = {
+export type RequestData = {
     pet: Pet
-    ingredients: string[]
+    ingredients: Ingredient[]
 }
 
 export type GetResponseData = {
@@ -37,7 +41,6 @@ export type ResponseData = {
     description: string
     id: number
     name: string
-    percentage: number
     pet: string
     rating: string
 }

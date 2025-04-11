@@ -1,5 +1,4 @@
 import {Ingredient} from "../../types/Types.ts";
-import {it} from "vitest";
 
 function trimToLowerCase(text: string): string {
     return text.trim().toLowerCase()
@@ -170,13 +169,14 @@ function splitContentToName(preps: PrepIngredient[]): PrepIngredient[] {
     return allIngredients
 }
 
-function mapPercentagesByName (array: PrepIngredient[]):PrepIngredient[] {
+function mapPercentagesFromNameString (array: PrepIngredient[]):PrepIngredient[] {
     const percentages: PrepIngredient[]=[]
     array.forEach(item => {
         if(item.name && isNumber(item.name)){
             percentages.push({
                 id: item.id,
-                percentage: Number(item.name)
+                percentage: Number(item.name),
+                ...item
             })
         }
         else{
@@ -185,27 +185,32 @@ function mapPercentagesByName (array: PrepIngredient[]):PrepIngredient[] {
     })
     return percentages
 }
-function moveClosingBracketsUp(array: PrepIngredient[]):PrepIngredient[]{
-    const movedBrackets:PrepIngredient[] =[]
-    for (let i = 0; i < array.length-1; i++) {
-        const current = array[i]
-        if(current.name === ")"){
-            const previous = movedBrackets[movedBrackets.length - 1]
-            if(previous?.name){
-                previous.name += ")"
+function moveClosingBracketsUp(array: PrepIngredient[]): PrepIngredient[] {
+    const movedBrackets: PrepIngredient[] = []
+
+    for (const current of array) {
+        if (current.name === ")") {
+            for (let j = movedBrackets.length - 1; j >= 0; j--) {
+                if (movedBrackets[j].name) {
+                    movedBrackets[j].name += ")"
+                    break
+                }
             }
-            continue
+        } else {
+            movedBrackets.push({ ...current })
         }
-        movedBrackets.push({...current})
     }
+
     return movedBrackets
+}
+
+
+function isSelfClosing(item: PrepIngredient):boolean{
+    return typeof item.name === "string" && item.name.includes("(") && item.name.includes(")");
 }
 
 function splitForRangesByBrackets(array: PrepIngredient[]): (PrepIngredient[])[] {
     const ranges: (PrepIngredient[])[] = [];
-
-    const isSelfClosing = (item: PrepIngredient): boolean =>
-        typeof item.name === "string" && item.name.includes("(") && item.name.includes(")");
 
     const isBracketRangeStart = (item: PrepIngredient): boolean =>
         typeof item.name === "string" && item.name.includes("(") && !isSelfClosing(item);
@@ -221,35 +226,225 @@ function splitForRangesByBrackets(array: PrepIngredient[]): (PrepIngredient[])[]
         if (isBracketRangeEnd(array[i])) ends.push(i);
     }
 
-    const bracketRanges: [number, number][] = starts.map((start, i) => [start, ends[i]]);
+    const bracketRanges: [number, number][] = [];
+    const minLength = Math.min(starts.length, ends.length);
+
+    for (let i = 0; i < minLength; i++) {
+        bracketRanges.push([starts[i], ends[i]]);
+    }
 
     if (starts[0] !== 0) {
         const preRange: PrepIngredient[] = array.slice(0, starts[0]);
-        if(preRange.length>0) ranges.push(preRange);
+        if (preRange.length > 0) ranges.push(preRange);
     }
+
 
     for (let i = 0; i < starts.length - 1; i++) {
         const start = ends[i] + 1;
         const end = starts[i + 1];
         if (start < end) {
             const betweenRange: PrepIngredient[] = array.slice(start, end);
-            if (betweenRange.length>0) ranges.push(betweenRange);
+            if (betweenRange.length > 0) ranges.push(betweenRange);
         }
     }
 
     bracketRanges.forEach(([start, end]) => {
         const range = array.slice(start, end + 1);
-        if(range.length>0) ranges.push(range);
+        if (range.length > 0) ranges.push(range);
     });
 
     const lastEnd = ends[ends.length - 1];
     if (lastEnd < array.length - 1) {
         const postRange = array.slice(lastEnd + 1);
-        if (postRange.length>0) ranges.push(postRange);
+        if (postRange.length > 0) ranges.push(postRange);
     }
+
+    const isBracketedRange = (range: PrepIngredient[]): boolean =>
+        range.some(item => isBracketRangeStart(item) || isBracketRangeEnd(item));
+
+    const flatRanges = new Set(ranges.flat());
+
+    array.forEach((item) => {
+        if (isSelfClosing(item) && !flatRanges.has(item)) {
+            // znajdź najbliższy zakres bez nawiasów
+            let closestIndex = -1;
+            let minDistance = Infinity;
+
+            ranges.forEach((range, rIdx) => {
+                if (!isBracketedRange(range)) {
+                    const first = range[0].id;
+                    const last = range[range.length - 1].id;
+                    const dist = Math.min(Math.abs(first - item.id), Math.abs(last - item.id));
+                    if (dist < minDistance) {
+                        minDistance = dist;
+                        closestIndex = rIdx;
+                    }
+                }
+            });
+
+            if (closestIndex !== -1) {
+                ranges[closestIndex].push(item);
+            } else {
+                ranges.push([item]); // jeśli brak sąsiedztwa, wrzuć jako osobny
+            }
+        }
+    });
 
     return ranges.sort((a, b) => a[0].id - b[0].id);
 }
+function percentagesWithNames(array: PrepIngredient[]): PrepIngredient[] {
+    const newRange: PrepIngredient[] = [];
+    if(array.length > 1){
+    array.forEach((item, index) => {
+        if(item.percentage && array[index+1]){
+            newRange.push({
+                ...item,
+                name:array[index+1].name
+            })
+        }else if(newRange.filter(element =>element.name===item.name).length<1){
+            newRange.push(item)
+        }
+    })}
+    return newRange
+}
+function selfClosingItemsToPercentages(prepIngredient: PrepIngredient):PrepIngredient{
+    if(isSelfClosing(prepIngredient)){
+        const nameContents = prepIngredient.name?.replace("(", " ").replace(")", "").split(" ")
+        if(nameContents && nameContents.length > 1){
+        return {
+            id: prepIngredient.id,
+            name: nameContents[0],
+            percentage: Number(nameContents[1])
+        }
+        }
+        return  prepIngredient
+    }
+    return prepIngredient;
+}
+function setNameForClosingBracket(name: string): string{
+    if(name.includes(")")){
+        return name.replace(")", "").trim()
+    }
+    return name;
+}
+function mapPercentageFirst(prepIngredients: PrepIngredient[], nameParts:string[]):PrepIngredient[]{
+        const mainElementName: string = nameParts[0].trim()
+        const nextElementPercentage: string = nameParts[1]
+        const mainElement = {
+            id: prepIngredients[0].id,
+            name: mainElementName
+        }
+        const nextElement = {
+            id: prepIngredients[1].id,
+            name: prepIngredients[1].name ? setNameForClosingBracket(prepIngredients[1].name) : "",
+            percentage: Number(nextElementPercentage),
+            in: mainElementName
+        }
+
+        const rest = prepIngredients.filter(ingredient => ingredient.id !== mainElement.id && ingredient.id !== nextElement.id )
+            .map(ingredient => {
+                return{
+                    ...ingredient,
+                    name: ingredient.name ? setNameForClosingBracket(ingredient.name) : "",
+                    in: mainElementName
+                }
+            })
+        return [
+            mainElement,
+            nextElement,
+            ...rest
+        ]
+}
+
+function mapNextNameFirst(prepIngredients: PrepIngredient[], nameParts:string[]):PrepIngredient[]{
+    const mainElementName: string = nameParts[0].trim()
+    const nextElementName: string = nameParts[1].trim()
+    const mainElement = {
+        id: prepIngredients[0].id,
+        name: mainElementName
+    }
+    // id is duplicated but will be overwritten in toIngredient map
+    const nextElement = {
+        id: prepIngredients[0].id,
+        name:  setNameForClosingBracket(nextElementName),
+        in: mainElementName
+    }
+    const rest = prepIngredients.filter(ingredient => ingredient.id !== mainElement.id)
+        .map(ingredient => {
+            return{
+                ...ingredient,
+                name: ingredient.name ? setNameForClosingBracket(ingredient.name) : "",
+                in: mainElementName
+            }
+        })
+    return [
+        mainElement,
+        nextElement,
+        ...rest
+    ]
+}
+
+function createIngredientsFromBrackets(ingredients: PrepIngredient[][]):PrepIngredient[][]{
+   return ingredients.map(range =>{
+        const nameContent = range[0].name
+        if(nameContent?.includes("(")){
+            const nameParts = nameContent.split("(")
+            if(nameParts.length > 1){
+                if( isNumber(nameParts[1])){
+                    return mapPercentageFirst(range, nameParts)
+                }
+                else{
+                    return mapNextNameFirst(range, nameParts)
+                }
+            }
+        }
+        return range
+    })
+
+}
+
+function mergeToPrepIngredients(rangesList: PrepIngredient[][]):PrepIngredient[]{
+    const allPrepIngredients: PrepIngredient[] = []
+    let id = 0
+    rangesList.forEach((range) => {
+        range.map(ingredient => {
+            const newIngredient = {
+                id,
+                ...ingredient,
+            }
+            allPrepIngredients.push(newIngredient)
+            id++
+        })
+    })
+    return allPrepIngredients
+}
+
+function setPercentagesByName(item: PrepIngredient, name: string):PrepIngredient{
+    const nameParts = name.split(" ")
+    const namePartsSource = nameParts.slice()
+    if(nameParts.length > 1){
+        const indexes:number[]=[]
+        nameParts.forEach((namePart, index) => {
+            if(isNumber(namePart)){
+                indexes.push(index)
+            }
+        })
+        if(indexes.length === 1){
+            nameParts.splice(indexes[0], 1)
+
+            const newName= nameParts.join(" ");
+            console.log("newNAme",newName)
+            return {
+                ...item,
+                name: newName,
+                percentage: Number(namePartsSource[indexes[0]])
+            }
+        }
+        return item
+        }
+    return item
+    }
+
 
 
 function extractPercentageIngredientsWithBrackets(text: string): Ingredient[] {
@@ -257,12 +452,30 @@ function extractPercentageIngredientsWithBrackets(text: string): Ingredient[] {
     const prepIngredients: PrepIngredient[] = createPrepIngredientsFromStringList(removedPercentChar)
     const setNames = mapNamesByContent(prepIngredients)
     const mappedNamesFromContent =splitContentToName(setNames)
-    const mappedPercentagesFromName = mapPercentagesByName(mappedNamesFromContent)
+    const mappedPercentagesFromName = mapPercentagesFromNameString(mappedNamesFromContent)
     const movedBrackets = moveClosingBracketsUp(mappedPercentagesFromName)
     const ranges = splitForRangesByBrackets(movedBrackets)
+    const mergedPercentages:PrepIngredient[][] = ranges.map(range =>{
+       return percentagesWithNames(range)
+        }
+    )
+    const selfClosingToPercentages = mergedPercentages.map(range =>{
+        return range.map((item) => {
+           return  selfClosingItemsToPercentages(item)
+        })
+    })
+    const mappedPercentages = createIngredientsFromBrackets(selfClosingToPercentages)
+    const mergedPrepIngredientsList = mergeToPrepIngredients(mappedPercentages)
+    const setPercentagesForNamesIncludingNumbers = mergedPrepIngredientsList.map(item =>{
+        if(item.name && item.name.includes(" ")){
+            return setPercentagesByName(item, item.name)
+        }
+        return item
+    })
 
-    console.log(movedBrackets)
-    console.log("ranges", ranges)
+    console.log("mergedPrepIngredientsList", mergedPrepIngredientsList)
+
+    console.log("ostatni", setPercentagesForNamesIncludingNumbers)
 
     return []
 }

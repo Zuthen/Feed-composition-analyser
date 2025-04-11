@@ -27,7 +27,9 @@
   border-radius: 15px;
   margin: 5px;
   padding:5px;
-  align-content:start
+  align-content:start;
+  width: auto;
+  text-wrap: nowrap;
 }
 .th-merged{
   text-align: right;

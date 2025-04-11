@@ -1,12 +1,10 @@
 import {supabaseUrl, supabaseServiceRole} from "../supabaseClient.ts";
-import {GetData, GetRequestData, Rating, ResponseData} from "../../types/Types.ts";
+import {DatabaseRecord, RequestData, Rating, ResponseData} from "../../types/Types.ts";
 import {Dispatch, SetStateAction} from "react";
 
-
-
-async function fetchData(data: GetRequestData, setLoadingDatabase: Dispatch<SetStateAction<boolean>> ): Promise<GetData[]> {
-    setLoadingDatabase(true);
-    const response = await fetch(`${supabaseUrl}/rest/v1/ingredients?or=(${data.ingredients.map(ingredient => `name.ilike.${ingredient}`).join(',')})&pet=eq.${data.pet}`
+async function fetchData(data: RequestData, setLoadingDatabase: Dispatch<SetStateAction<boolean>> ): Promise<DatabaseRecord[]> {
+    console.log("Fetching data from database...", data);
+    const response = await fetch(`${supabaseUrl}/rest/v1/ingredients?or=(${data.ingredients.map(item => `name.ilike.${item.name.toString()}`).join(',')})&pet=eq.${data.pet}`
         , {
         method: 'GET',
         headers: {
@@ -18,7 +16,7 @@ async function fetchData(data: GetRequestData, setLoadingDatabase: Dispatch<SetS
 
     const fullResult: ResponseData[] = await response.json();
 
-    const result: GetData[] = fullResult.map(item => (
+    const result: DatabaseRecord[] = fullResult.map(item => (
         {
             id: item.id,
             description: item.description,

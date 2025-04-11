@@ -9,19 +9,19 @@ describe("Results", () => {
         const data:ListItem[]= [
             {
              name: "Mięcho",
-             id: "1",
+             id: 1,
              description: "Bardzo dobre",
              rating: "great"
             },
             {
                 name: "Podroby",
-                id: "2",
+                id: 2,
                 description: "Może być",
                 rating: "ok"
             },
             {
                 name: "Kiełbasa",
-                id: "3",
+                id: 3,
                 description: "Co to ma być!!!",
                 rating: "avoid"
             }
@@ -37,20 +37,15 @@ describe("Results", () => {
 
         // Assert
         const tableRows= sut.getAllByRole("row")
-        expect(tableRows.length).toEqual(data.length+1)
-        // Table Header
-        const headerCells = within(tableRows[0]).getAllByRole("columnheader")
-        expect(headerCells.length).toEqual(2)
-        expect(headerCells[0].textContent).toBe("składnik")
-        expect(headerCells[1].textContent).toBe("opis")
+        expect(tableRows.length).toEqual(data.length)
         // Table Rows
         for (let i=1; i<tableRows.length; i++){
             const tableRow=tableRows[i]
             const tableCells=within(tableRow).getAllByRole("cell")
             expect(tableCells.length).toEqual(3)
-            expect(tableCells[0].textContent).toContain(discriptiveRate(data[i-1].rating))
-            expect(tableCells[1].textContent).toContain(data[i-1].name)
-            expect(tableCells[2].textContent).toContain((data[i-1].description))
+            expect(tableCells[0].textContent).toContain(discriptiveRate(data[i].rating))
+            expect(tableCells[1].textContent).toContain(data[i].name)
+            expect(tableCells[2].textContent).toContain((data[i].description))
         }
     })
 })

@@ -1,82 +1,12 @@
 import {Ingredient} from "../../types/Types.ts";
 
-function trimToLowerCase(text: string): string {
-    return text.trim().toLowerCase()
-}
-function extractNumberOnTextEnd(text: string) :Ingredient{
-    const textParts = text.split(" ")
-    const lastPart = textParts[textParts.length - 1]
-    if (textParts.length>1 &&isNumber(textParts[textParts.length-1])) {
-        return {
-            name: textParts.slice(0, -1).join(" "),
-            percentage: Number(lastPart)
-        };
-    }
-    return {
-        name: text
-    }
-}
-
-function extractNameOnlyIngredients(text: string): Ingredient[]{
-    return text.split(",").map(item =>{
-        return {
-            name: trimToLowerCase(item)
-        }
-    })
-}
 function isNumber(text: string): boolean{
     return !isNaN(Number(text));
-}
-function extractPercentageIngredients (text: string){
-
-    const percentagesAndNames: string[] = []
-
-    text.split("%").forEach(item =>{
-        const split = trimToLowerCase(item).split(",")
-            for(let i=0; i<split.length; i++){
-                if(split[i]) {percentagesAndNames.push(split[i].trim())}
-        }
-    })
-    const ingredients: Ingredient[] = []
-    for(let i=0; i<percentagesAndNames.length; i++){
-        if(isNumber(percentagesAndNames[i])){
-            ingredients.push({
-                name: percentagesAndNames[i+1],
-                percentage: Number(percentagesAndNames[i])
-            })
-            i++
-        }
-        else {
-            ingredients.push(extractNumberOnTextEnd(percentagesAndNames[i]))}
-        }
-    console.log(ingredients)
-
-    return ingredients
-}
-
-function extractIngredientsWithBrackets(text: string): Ingredient[]{
-    const partialIngredients = text.split("(")
-    const ingredients = partialIngredients[0].split(",")
-    const ingredientList: Ingredient[] = ingredients.map(ingredient => {
-        return {
-            name: trimToLowerCase(ingredient),
-        }
-    })
-    const mainIngredient=ingredients[ingredients.length - 1]
-    const lastIngredientContent :Ingredient[] = partialIngredients[1].split(",").map(ingredient =>{
-        return {
-            name: trimToLowerCase(ingredient),
-            in:mainIngredient
-        }
-    })
-    return ingredientList.concat(lastIngredientContent)
 }
 
 function splitItemsBy(array: string[], condition: string): string[] {
     return array.flatMap(item => item.includes(condition) ? item.split(condition) : [item])
 }
-
-
 
 type PrepIngredient = {
     id: number,
@@ -158,6 +88,7 @@ function splitContentToName(preps: PrepIngredient[]): PrepIngredient[] {
                 id++
             }
         }else{
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
             const { id: _, ...rest } = prep
             allIngredients.push({
                 id,
@@ -174,7 +105,6 @@ function mapPercentagesFromNameString (array: PrepIngredient[]):PrepIngredient[]
     array.forEach(item => {
         if(item.name && isNumber(item.name)){
             percentages.push({
-                id: item.id,
                 percentage: Number(item.name),
                 ...item
             })
@@ -409,8 +339,8 @@ function mergeToPrepIngredients(rangesList: PrepIngredient[][]):PrepIngredient[]
     rangesList.forEach((range) => {
         range.map(ingredient => {
             const newIngredient = {
-                id,
                 ...ingredient,
+                id
             }
             allPrepIngredients.push(newIngredient)
             id++
@@ -433,7 +363,6 @@ function setPercentagesByName(item: PrepIngredient, name: string):PrepIngredient
             nameParts.splice(indexes[0], 1)
 
             const newName= nameParts.join(" ");
-            console.log("newNAme",newName)
             return {
                 ...item,
                 name: newName,
@@ -447,7 +376,7 @@ function setPercentagesByName(item: PrepIngredient, name: string):PrepIngredient
 
 
 
-function extractPercentageIngredientsWithBrackets(text: string): Ingredient[] {
+export default function extractIngredients(text: string): Ingredient[] {
     const removedPercentChar = splitItemsBy(text.split(","), "%").slice()
     const prepIngredients: PrepIngredient[] = createPrepIngredientsFromStringList(removedPercentChar)
     const setNames = mapNamesByContent(prepIngredients)
@@ -473,31 +402,20 @@ function extractPercentageIngredientsWithBrackets(text: string): Ingredient[] {
         return item
     })
 
-    console.log("mergedPrepIngredientsList", mergedPrepIngredientsList)
+    console.log(setPercentagesForNamesIncludingNumbers.map((item) =>{
+        const { id, ...rest } = item;
+        return {
+            ...rest,
+            name: item.name ? item.name : "",
+        }
+    }))
 
-    console.log("ostatni", setPercentagesForNamesIncludingNumbers)
+    return setPercentagesForNamesIncludingNumbers.map((item) =>{
+        const { id, ...rest } = item;
+        return {
+            ...rest,
+            name: item.name ? item.name : "",
+        }
+    })
 
-    return []
-}
-    // herbata(20%), cynamon, cukier(17% biały, 18% brązowy), miłość (fizyczna, psychiczna), 18% imbir, ryba(ości 12%, mięso 5%), tymianek(15%),
-//
-
-
-
-export default function extractIngredients (text: string): Ingredient[] {
-    if(text.includes("%") && text.includes("%")){
-        return extractPercentageIngredientsWithBrackets(text)
-    }
-
-    if(text.includes("%") && !text.includes("(")){
-        return extractPercentageIngredients(text)
-    }
-
-    if(text.includes("(") && !text.includes("%")){
-        return extractIngredientsWithBrackets(text)
-    }
-    if(text.includes("%") && text.includes("%")){
-        return [{name: "notImplemented"}]
-    }
-    return extractNameOnlyIngredients(text);
 }
